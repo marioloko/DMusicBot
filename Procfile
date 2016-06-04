@@ -1,1 +1,1 @@
-worker: python2.7 bot.py
+web: python2.7 bot.py
