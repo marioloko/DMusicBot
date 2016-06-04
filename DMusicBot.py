@@ -3,6 +3,7 @@ import argparse
 import json
 import requests
 import spotipy
+import os
 
 """
 	DMusicBot.py is intended to be a lib for Telegram's DMusicBot
@@ -14,7 +15,7 @@ import spotipy
 """
 
 # Youtube API keys
-DEVELOPER_KEY = "AIzaSyCt3JVfcH5tRAYbBLoXEECJvmPnIf-xnGc"
+DEVELOPER_KEY = os.environ['YOUTUBEKEY']
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
