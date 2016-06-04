@@ -1,25 +1,45 @@
 # -*- coding: utf-8 -*-
 
-import telebot # Librería de la API del bot.
-import DMusicBot
-from telebot import types # Tipos para la API del bot.
-import time # Librería para hacer que el programa que controla el bot no se acabe.
-import os # Library for get the environment variables
+import telebot # Library fot the bot API.
+import dmusicbot as dmb # Library with the posible bot actions.
+from telebot import types # Types for the bot API.
+import time # Library for avoid the bot end.
+import os # Library for get the environment variables.
  
-TOKEN = os.environ['DMUSICBOT'] # Nuestro tokken del bot (el que @BotFather nos dió).
+TOKEN = os.environ['DMUSICBOT'] # Our bot token (the one given to us by @BotFather)
  
-bot = telebot.TeleBot(TOKEN) # Creamos el objeto de nuestro bot.
+bot = telebot.TeleBot(TOKEN) # Create our bot object
 
-@bot.message_handler(commands=['hola'])
-def hola(message):
-	bot.reply_to(message, "hola")
- 
-def listener(messages): # Con esto, estamos definiendo una función llamada 'listener', que recibe como parámetro un dato llamado 'messages'.
-    for m in messages: # Por cada dato 'm' en el dato 'messages'
-        if m.content_type == 'text': # Filtramos mensajes que sean tipo texto.
-            cid = m.chat.id # Almacenaremos el ID de la conversación.
-            print "[" + str(cid) + "]: " + m.text # Y haremos que imprima algo parecido a esto -> [52033876]: /start
- 
-bot.set_update_listener(listener) # Así, le decimos al bot que utilice como función escuchadora nuestra función 'listener' declarada arriba.
+@bot.message_handler(commands=['search'])
+def search(message):
+	track = message.text[8:] # remove /search word from the string
+	url = dmb.search(track)
+	bot.send_message(message.chat.id, url) # Send the user the youtube url
 
-bot.polling(none_stop=True) # Con esto, le decimos al bot que siga funcionando incluso si encuentra algún fallo.
+@bot.message_handler(commands=['download'])
+def download(message):
+	track = message.text[10:] # remove /download word from the string
+	url = dmb.download(track)
+	bot.send_message(message.chat.id, url) # Send the user the download url
+
+@bot.message_handler(commands=['usearch'])
+def usearch(message):
+	track = message.text[9:] # remove /usearch word from the string
+	url = dmb.usearch(track)
+	bot.send_message(message.chat.id, url) # Send the user the youtube url
+
+@bot.message_handler(commands=['udownload'])
+def udownload(message):
+	track = message.text[11:] # remove /udownload word from the string
+	url = dmb.udownload(track)
+	bot.send_message(message.chat.id, url) # Send the user the download url
+ 
+def listener(messages): # For debug
+    for m in messages: 
+        if m.content_type == 'text': # Filter text messages
+            cid = m.chat.id # Store chat id
+            print "[" + str(cid) + "]: " + m.text 
+ 
+bot.set_update_listener(listener) # Use function "listener" declared above as listener.
+
+bot.polling(none_stop=True) # The bot will continue working even with errors.

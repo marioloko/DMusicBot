@@ -13,7 +13,6 @@ import os
 	Spotify-Downloader(https://github.com/akul08/Spotify-Downloader)
 	code, modified in order to fit better to the telegram Bot.
 """
-
 # Youtube API keys
 DEVELOPER_KEY = os.environ['YOUTUBEKEY']
 YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -31,14 +30,14 @@ def search(track_name):
 		search: print the youtube url of track_name
 			track_name: name of the track we are looking for
 	"""
-	print youtube_watch( youtube_search( spotify_search(track_name) ) )
+	return youtube_watch( youtube_search( spotify_search(track_name) ) )
 
 def download(track_name):
 	"""
 		download: print the download url of track_name
 			track_name: name of the track we are looking for
 	"""
-	print youtube_download( youtube_search( spotify_search(track_name) ) )
+	return youtube_download( youtube_search( spotify_search(track_name) ) )
 
 def usearch(track_name):
 	"""
@@ -46,7 +45,7 @@ def usearch(track_name):
 				(does not check in spotify if it is a song)
 			track_name: name of the track we are looking for
 	"""
-	print youtube_watch( youtube_search(track_name) )
+	return youtube_watch( youtube_search(track_name) )
 
 def udownload(track_name):
 	"""
@@ -54,7 +53,7 @@ def udownload(track_name):
 				(does not check in spotify if it is a song)
 			track_name: name of the track we are looking for
 	"""
-	print youtube_download( youtube_search(track_name) )
+	return youtube_download( youtube_search(track_name) )
 
 def spotify_search(track_name):
 	"""
@@ -64,7 +63,7 @@ def spotify_search(track_name):
 	"""
 	results = sp.search(q=track_name, limit=1, type='track')
 	tracks = results['tracks']['items']
-	
+
 	for track in tracks:
 		return "%32.32s %s" % (track['artists'][0]['name'], track['name'])
 
@@ -112,6 +111,7 @@ def youtube_watch(video_id):
 	"""
 	return 'https://www.youtube.com/watch?v=%s' % video_id
 
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('track', 
@@ -135,13 +135,13 @@ def main():
 	args = parser.parse_args()
 
 	if (args.search):
-		search(args.track)
+		print search(args.track)
 	elif (args.download):
-		download(args.track)
+		print download(args.track)
 	elif (args.usearch):
-		usearch(args.track)
+		print usearch(args.track)
 	elif (args.udownload):
-		udownload(args.track)
+		print udownload(args.track)
 
 if __name__ == '__main__':
 	main()
