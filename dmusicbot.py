@@ -99,7 +99,10 @@ def youtube_download(video_id):
 	except ValueError:
 		from bs4 import BeautifulSoup as bs
 		soup = bs(r.text, 'html.parser')
-		download_link = 'http://www.youtubeinmp3.com/download/%s' % soup.find(id='download')['href']
+		download = soup.find(id='download')
+		if not download:
+			return 'Track not found for downloading'
+		download_link = 'http://www.youtubeinmp3.com/download/%s' % download['href']
 
 	return download_link
 
