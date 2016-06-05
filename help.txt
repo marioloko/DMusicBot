@@ -1,0 +1,14 @@
+I am DMusicBot a bot focus in searching music for you.
+If you want to listen to music online I will search the song's Youtube link for you.
+If you want to download the music I will also search the song's download link for you!
+
+You can control me by sending these commands:
+
+/search "track name" - search the track's youtube link (the track must exist in spotify)
+/usearch "track name" - search the track's youtube link
+/download "track name" - search the track's download link (the track must exist in spotify)
+/udownload "track name" - search the track's download link
+
+IMPORTANT: "track name" is the name of the song you are looking for. It must be append at the end of each command.
+
+EXAMPLE: /search highway to hell

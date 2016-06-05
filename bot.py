@@ -33,6 +33,11 @@ def udownload(message):
 	track = message.text[11:] # remove /udownload word from the string
 	url = dmb.udownload(track)
 	bot.send_message(message.chat.id, url) # Send the user the download url
+
+@bot.message_handler(commands=['help','start'])
+def help(message):
+	content = dmb.help()
+	bot.send_message(message.chat.id, url) # Send the user the bot's help
  
 def listener(messages): # For debug
     for m in messages: 

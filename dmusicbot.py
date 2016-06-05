@@ -13,6 +13,9 @@ import os
 	Spotify-Downloader(https://github.com/akul08/Spotify-Downloader)
 	code, modified in order to fit better to the telegram Bot.
 """
+# File that contains bot's help data
+HELP_FILE = 'help.txt'
+
 # Youtube API keys
 DEVELOPER_KEY = os.environ['YOUTUBEKEY']
 YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -54,6 +57,14 @@ def udownload(track_name):
 			track_name: name of the track we are looking for
 	"""
 	return youtube_download( youtube_search(track_name) )
+
+def help():
+	"""
+		help: get the help of how to use the bot store in HELP_FILE
+	"""
+	with open(HELP_FILE) as f:
+		content = f.read()
+	return content
 
 def spotify_search(track_name):
 	"""
