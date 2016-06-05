@@ -16,6 +16,9 @@ import os
 # File that contains bot's help data
 HELP_FILE = 'help.txt'
 
+# Advertisement track if no track_name
+ADVERTISEMENT = os.environ['ADVERTISEMENT']
+
 # Youtube API keys
 DEVELOPER_KEY = os.environ['YOUTUBEKEY']
 YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -72,6 +75,9 @@ def spotify_search(track_name):
 			track_name: name of the track we are searching for
 			return: artist name + track name
 	"""
+	if not track_name:
+		track_name = ADVERTISEMENT
+
 	results = sp.search(q=track_name, limit=1, type='track')
 	tracks = results['tracks']['items']
 
@@ -84,6 +90,9 @@ def youtube_search(track_name):
 			track_name: name of the track we are searching for
 			return: track's videoId
 	"""
+	if not track_name:
+		track_name = ADVERTISEMENT
+
 	results = youtube.search().list(
 		q=track_name,
 		part="id,snippet",

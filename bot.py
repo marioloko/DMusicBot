@@ -1,58 +1,74 @@
 # -*- coding: utf-8 -*-
 
 import telebot # Library fot the bot API.
-import dmusicbot as dmb # Library with the posible bot actions.
-import emoji as emo # Library with emoji codification
 from telebot import types # Types for the bot API.
+import dmusicbot as dmb # Library with the posible bot actions.
+from keyboards import EmotionsKeyboard
+from ratemanager import Ratemanager
 import time # Library for avoid the bot end.
 import os # Library for get the environment variables.
+
  
 TOKEN = os.environ['DMUSICBOT'] # Our bot token (the one given to us by @BotFather)
  
 bot = telebot.TeleBot(TOKEN) # Create our bot object
+
+emotions_markup = EmotionsKeyboard.get_keyboard() # Unique instance for emotions keyboard
+
+rate_mng = Ratemanager().get_manager() # get a rate manager
+
+rate_queue = {} # user waiting for rating
 
 @bot.message_handler(commands=['search'])
 def search(message):
 	track = message.text[8:] # remove /search word from the string
 	url = dmb.search(track)
 	bot.send_message(message.chat.id, url) # Send the user the youtube url
-	rate(message)
+	ask_rate(message)
 
 @bot.message_handler(commands=['download'])
 def download(message):
 	track = message.text[10:] # remove /download word from the string
 	url = dmb.download(track)
 	bot.send_message(message.chat.id, url) # Send the user the download url
+	ask_rate(message)
 
 @bot.message_handler(commands=['usearch'])
 def usearch(message):
 	track = message.text[9:] # remove /usearch word from the string
 	url = dmb.usearch(track)
 	bot.send_message(message.chat.id, url) # Send the user the youtube url
+	ask_rate(message)
 
 @bot.message_handler(commands=['udownload'])
 def udownload(message):
 	track = message.text[11:] # remove /udownload word from the string
 	url = dmb.udownload(track)
 	bot.send_message(message.chat.id, url) # Send the user the download url
+	ask_rate(message)
 
 @bot.message_handler(commands=['help','start'])
 def help(message):
 	content = dmb.help()
 	bot.send_message(message.chat.id, content) # Send the user the bot's help
 
-def rate(message):
-	markup = types.ReplyKeyboardMarkup(row_width=2)
-	happybtn = types.KeyboardButton('Happy' + emo.HAPPY)
-	sadbtn = types.KeyboardButton('Sad' + emo.SAD)
-	angerbtn = types.KeyboardButton('Anger' + emo.ANGER)
-	fearbtn = types.KeyboardButton('Fear' + emo.FEAR)
-	surprbtn = types.KeyboardButton('Surprise' + emo.SURPRISE)
-	disgbtn = types.KeyboardButton('Disgust' + emo.DISGUST)
-	markup.add(happybtn, sadbtn, angerbtn, fearbtn, surprbtn, disgbtn)
+def ask_rate(message):
 	bot.send_message(message.chat.id, "How did the music make you feel:",
-		reply_markup=markup)
-	
+		reply_markup=emotions_markup)
+	rate_queue[message.chat.id] = 1 # Set user as pending for rating
+
+@bot.message_handler(func=lambda message: message.chat.id in rate_queue.keys() 
+	and rate_queue[message.chat.id] == 1)
+def read_rate(message):
+	hide_markup = types.ReplyKeyboardHide(selective=False)
+	response = message.text.encode('utf8')
+	if response in rate_mng.keys():
+		rate_mng[response]() # call the model handler
+		bot.send_message(message.chat.id, "Thanks, for rate!!!", 
+			reply_markup=hide_markup)
+		rate_queue[message.chat.id] = 0 # Set user as NOT pending for rating
+	else:
+		bot.send_message(message.chat.id, "Please use the provide buttons")
  
 def listener(messages): # For debug
     for m in messages: 
