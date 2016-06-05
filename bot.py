@@ -37,7 +37,7 @@ def udownload(message):
 @bot.message_handler(commands=['help','start'])
 def help(message):
 	content = dmb.help()
-	bot.send_message(message.chat.id, url) # Send the user the bot's help
+	bot.send_message(message.chat.id, content) # Send the user the bot's help
  
 def listener(messages): # For debug
     for m in messages: 
