@@ -58,7 +58,7 @@ def help(message):
 	bot.send_message(message.chat.id, content) # Send the user the bot's help
 
 def ask_rate(message):
-	bot.send_message(message.chat.id, "How did the music make you feel:",
+	bot.send_message(message.chat.id, "How did the music make you feel?",
 		reply_markup=emotions_markup)
 	rate_queue[message.chat.id] = 1 # Set user as pending for rating
 
