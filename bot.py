@@ -2,6 +2,7 @@
 
 import telebot # Library fot the bot API.
 import dmusicbot as dmb # Library with the posible bot actions.
+import emoji as emo # Library with emoji codification
 from telebot import types # Types for the bot API.
 import time # Library for avoid the bot end.
 import os # Library for get the environment variables.
@@ -15,6 +16,7 @@ def search(message):
 	track = message.text[8:] # remove /search word from the string
 	url = dmb.search(track)
 	bot.send_message(message.chat.id, url) # Send the user the youtube url
+	rate(message)
 
 @bot.message_handler(commands=['download'])
 def download(message):
@@ -38,6 +40,19 @@ def udownload(message):
 def help(message):
 	content = dmb.help()
 	bot.send_message(message.chat.id, content) # Send the user the bot's help
+
+def rate(message):
+	markup = types.ReplyKeyboardMarkup(row_width=2)
+	happybtn = types.KeyboardButton('Happy' + emo.HAPPY)
+	sadbtn = types.KeyboardButton('Sad' + emo.SAD)
+	angerbtn = types.KeyboardButton('Anger' + emo.ANGER)
+	fearbtn = types.KeyboardButton('Fear' + emo.FEAR)
+	surprbtn = types.KeyboardButton('Surprise' + emo.SURPRISE)
+	disgbtn = types.KeyboardButton('Disgust' + emo.DISGUST)
+	markup.add(happybtn, sadbtn, angerbtn, fearbtn, surprbtn, disgbtn)
+	bot.send_message(message.chat.id, "How did the music make you feel:",
+		reply_markup=markup)
+	
  
 def listener(messages): # For debug
     for m in messages: 
