@@ -8,6 +8,11 @@ from ratemanager import Ratemanager
 import time # Library for avoid the bot end.
 import os # Library for get the environment variables.
 
+# PROVISIONAL: Solves heroku encoding error
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
  
 TOKEN = os.environ['DMUSICBOT'] # Our bot token (the one given to us by @BotFather)
  
