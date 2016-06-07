@@ -19,14 +19,17 @@ class EmotionsKeyboard:
 		"""
 			get_keyboard: return the emotions keyboard
 		"""
+		# Alias the class name for readability
+		ek = EmotionsKeyboard
+		
 		# Define keyboard buttons
-		happybtn = types.KeyboardButton(EmotionsKeyboard.HAPPYSTR)
-		sadbtn = types.KeyboardButton(EmotionsKeyboard.SADSTR)
-		angerbtn = types.KeyboardButton(EmotionsKeyboard.ANGERSTR)
-		fearbtn = types.KeyboardButton(EmotionsKeyboard.FEARSTR)
-		surprbtn = types.KeyboardButton(EmotionsKeyboard.SURPRISESTR)
-		disgbtn = types.KeyboardButton(EmotionsKeyboard.DISGUSTSTR)
-		nonebtn = types.KeyboardButton(EmotionsKeyboard.NONESTR)
+		happybtn = types.KeyboardButton(ek.HAPPYSTR)
+		sadbtn = types.KeyboardButton(ek.SADSTR)
+		angerbtn = types.KeyboardButton(ek.ANGERSTR)
+		fearbtn = types.KeyboardButton(ek.FEARSTR)
+		surprbtn = types.KeyboardButton(ek.SURPRISESTR)
+		disgbtn = types.KeyboardButton(ek.DISGUSTSTR)
+		nonebtn = types.KeyboardButton(ek.NONESTR)
 
 		# Add buttons to the keyboard
 		markup = types.ReplyKeyboardMarkup()

@@ -1,15 +1,16 @@
-from keyboards import EmotionsKeyboard
+from keyboards import EmotionsKeyboard as ek
+
 class Ratemanager:
 
 	def __init__(self):
 		self.emotions = {
-			EmotionsKeyboard.HAPPYSTR: self.happy,
-			EmotionsKeyboard.SADSTR: self.sad,
-			EmotionsKeyboard.ANGERSTR: self.anger,
-			EmotionsKeyboard.FEARSTR: self.fear,
-			EmotionsKeyboard.SURPRISESTR: self.surprise,
-			EmotionsKeyboard.DISGUSTSTR: self.disgust,
-			EmotionsKeyboard.NONESTR: self.none
+			ek.HAPPYSTR: self.happy,
+			ek.SADSTR: self.sad,
+			ek.ANGERSTR: self.anger,
+			ek.FEARSTR: self.fear,
+			ek.SURPRISESTR: self.surprise,
+			ek.DISGUSTSTR: self.disgust,
+			ek.NONESTR: self.none
 		}
 	
 	def get_manager(self):

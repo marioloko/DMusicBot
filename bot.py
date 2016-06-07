@@ -3,22 +3,22 @@
 import telebot # Library fot the bot API.
 from telebot import types # Types for the bot API.
 import dmusicbot as dmb # Library with the posible bot actions.
-from keyboards import EmotionsKeyboard
+from keyboards import EmotionsKeyboard as ek # Library with markup keyboard for emotions
 from ratemanager import Ratemanager
 import time # Library for avoid the bot end.
 import os # Library for get the environment variables.
 
 # PROVISIONAL: Solves heroku encoding error
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#import sys
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
  
 TOKEN = os.environ['DMUSICBOT'] # Our bot token (the one given to us by @BotFather)
  
 bot = telebot.TeleBot(TOKEN) # Create our bot object
 
-emotions_markup = EmotionsKeyboard.get_keyboard() # Unique instance for emotions keyboard
+emotions_markup = ek.get_keyboard() # Unique instance for emotions keyboard
 
 rate_mng = Ratemanager().get_manager() # get a rate manager
 
@@ -58,13 +58,22 @@ def help(message):
 	bot.send_message(message.chat.id, content) # Send the user the bot's help
 
 def ask_rate(message):
-	bot.send_message(message.chat.id, "How did the music make you feel?",
+	"""
+		ask_rate: ask the users how the songs have make them feel, and display
+			the EmotionalKeyboard for answering.
+	"""
+	bot.send_message(message.chat.id, "How did the song make you feel?",
 		reply_markup=emotions_markup)
 	rate_queue[message.chat.id] = 1 # Set user as pending for rating
 
 @bot.message_handler(func=lambda message: message.chat.id in rate_queue.keys() 
 	and rate_queue[message.chat.id] == 1)
 def read_rate(message):
+	"""
+		read_rate: check that the user is using the EmotionalKeyboard for rating
+			and perform the appropiate action to that emotion.
+			Then hide the EmotionalKeyboard.
+	"""
 	hide_markup = types.ReplyKeyboardHide(selective=False)
 	response = message.text.encode('utf8')
 	if response in rate_mng.keys():
