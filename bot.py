@@ -68,10 +68,10 @@ def read_rate(message):
 			and perform the appropiate action to that emotion.
 			Then hide the EmotionalKeyboard.
 	"""
-	hide_markup = types.ReplyKeyboardHide(selective=False)
 	response = message.text.encode('utf8')
 	if response in rate_mng.keys():
 		rate_mng[response]() # call the model handler
+		hide_markup = types.ReplyKeyboardHide(selective=False) # hide markup 
 		bot.send_message(message.chat.id, "Thanks, for rate!!!", 
 			reply_markup=hide_markup)
 		rate_queue[message.chat.id] = 0 # Set user as NOT pending for rating
